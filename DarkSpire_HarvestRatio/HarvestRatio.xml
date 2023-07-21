@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- to figure out how much energy is derived by a unit dying on a Dark Spire planet,
+       you multiply the Strength of unit killed by the killing faction's ration_when_killing and the
+       dying unit's faction ratio_when dying. So if the Devourer kills a human ship then we multiply
+       the strength of the human ship killed by the human's ratio_when_dying and the devourer's ratio_when_killing.
+
+       We provide a Default, then allow overrides for other factions -->
+  <item name="DireMacrophageRatio"
+        faction_name="DireMacrophageInfestation"
+        harvest_ratio_when_dying="0.2"
+        harvest_ratio_when_killing="1"
+        />
+</root>

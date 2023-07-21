@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+
+<entity name="DireMacrophageHarvester"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="DireMacrophageHarvester,RegularDireMacrophageHarvester,NanocaustsToLich,,BecomesNecromancyMummy,GeneratesBonusHunterShips"
+			special_entity_type="LargeShipNotStackable"
+			gimbal_icon_size_multiplier="1.25"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
+      icon_name="Ships1/MacrophageHarvester"
+			uses_large_health_bar="true"
+			category="Ship"
+			size_scale="7"
+			visuals_scale_multiplier="3"
+			y_offset_of_icon="10"
+			collision_priority="100"
+			display_name="Dire Macrophage"
+			description="The Dire Macrophage harvests metal from other ships and structures and feeds its associated Telium. A mutation of the Macrophage fit to predate on its brethren, it is faster, and equipped with a sabot weapon."
+			starting_mark_level="Mark1"
+			cost_for_ai_to_purchase="25000"			
+			hull_points="3600000" shield_points="2400000" speed="Normal1"
+			metal_cost="2500000" energy_consumption="30000"
+			armor_mm="110" albedo="0.7" engine_gx="20" mass_tx="7"
+			ship_or_structure_explosion_sfx="ShipGuardian_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			speed_multiplier_first_5_seconds_on_planet="2"
+			description_appender_dll="DireMacrophageFactionBaseInfo"
+			description_appender_type="Arcen.AIW2.External.DireHarvesterDescriptionAppender"
+      
+      priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="SlightlyLessExpendable"
+			>
+    <system name="W1" display_name="Osteoclast Shards"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="1200" range="Normal3" shot_speed="Slow" rate_of_fire="Misery"
+				shots_per_salvo="16" fires_salvos_sequentially="false"
+				shot_type_data="PlasmaTorpedoAOEBurstAtEnd"
+				area_of_effect_size="99"				
+				aoe_spreads_damage_among_available_targets="true"
+				health_change_per_damage_dealt="0.5"
+				>
+    </system>
+    <system name="R2" display_name="Osteoclast Energy Wave"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="1200" range="Normal3" shot_speed="VeryFast" rate_of_fire="Misery"
+				shots_per_salvo="10" fires_salvos_sequentially="false"
+				shot_type_data="EnergyWave"		
+				health_change_per_damage_dealt="0.5"		
+				>
+    </system>
+	<system name="WS" display_name="Osteoclast Sabot"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="14000" range="Normal3" shot_speed="Normal" rate_of_fire="Normal" fires_salvos_sequentially="true"
+				shot_type_data="Sabot"
+				health_change_per_damage_dealt="0.5"				
+				>
+				<outgoing_damage_modifier based_on="mass_tx" comparison_type="AtLeast" compared_to="5" multiplier="5" />
+    </system>
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_science_to_grant_on_death="50"/>	
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+  
+  <entity name="DireTelium"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="DireMacrophageTelium,ShowsOnNormalDisplayMode"
+			draw_in_galaxy_view="true"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Telium/MacrophageTelium.prefab" gimbal_name="Telium"
+			icon_name="Ships1/Telium" gimbal_icon_size_multiplier="1.4"
+			category="Ship"
+			size_scale="8"
+			visuals_scale_multiplier="3"
+			y_offset_of_icon="30"
+			collision_priority="910"
+			display_name="Dire Telium"
+			description="This structure is a hub for the Dire Macrophage Infestation. Its Harvesters will harvest metal and return it here. When Dire Macrophages return here with a full shipment of metal, this Dire Telium will gain permanent income. May produce a variety of things in addition to beefed up stock Macrophage, such as defenses, carriers and siege units. "
+			behavior="Stationary"
+			starting_mark_level="Markless"
+			cost_for_ai_to_purchase="3200"			
+			hull_points="80000000" shield_points="40000000" speed="Immobile"
+			metal_cost="405000" energy_consumption="5000"
+			armor_mm="30" albedo="0.1" mass_tx="4"
+			ship_or_structure_explosion_sfx="ShipLostMassive_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			attrition_damage="100"
+			strength_multiplier="0.01"
+			seconds_to_fully_regenerate_hull="600"
+      assist_range="Normal6"
+	  external_invulnerability_unit_tag="DireMacrophageDefense"
+      external_invulnerability_region="Galaxy"
+			description_appender_dll="DireMacrophageFactionBaseInfo"
+			description_appender_type="Arcen.AIW2.External.DireTeliumDescriptionAppender"
+      
+      priority_as_ai_target="BigThreateningWeapon" priority_as_frd_target="NotDangerous" priority_to_protect="BigFavoriteToy"
+			>
+    <metal_flow purpose="RepairingHullsOfFriendlies" throughput="1000"/>
+    <metal_flow purpose="RepairingEnginesOfFriendlies" throughput="1000"/>
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+  
+  <entity name="EvolvedDireMacrophageHarvester"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="EvolvedDireMacrophageHarvester,RegularEvolvedDireMacrophageHarvester,NanocaustsToLich,,BecomesNecromancyMummy,GeneratesBonusHunterShips,ShowsOnNormalDisplayMode"
+			special_entity_type="LargeShipNotStackable"
+			gimbal_icon_size_multiplier="1.5"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
+      icon_name="Ships1/MacrophageHarvester"
+			uses_large_health_bar="true"
+			draw_in_galaxy_view="true"
+			category="Ship"
+			size_scale="8"
+			visuals_scale_multiplier="3"
+			y_offset_of_icon="10"
+			collision_priority="100"
+			display_name="Evolved Dire Macrophage"
+			description="The Evolved Dire Macrophage is the final form of the Dire Macrophage, evolving a jamming weapon, replacing its sabot with a railgun tailored for single targets, agglomerates its two main weapons into one, and finally regenerates outside of battle. Has a tendancy to go on planets with hostiles to aggressively gather metal."
+			starting_mark_level="Mark1"
+			cost_for_ai_to_purchase="75000"			
+			hull_points="7200000" shield_points="4800000" speed="Normal3"
+			metal_cost="5000000" energy_consumption="50000"
+			armor_mm="200" albedo="0.8" engine_gx="22" mass_tx="10"
+			ship_or_structure_explosion_sfx="ShipGuardian_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			speed_multiplier_first_5_seconds_on_planet="2"
+			description_appender_dll="DireMacrophageFactionBaseInfo"
+			description_appender_type="Arcen.AIW2.External.EvolvedDireHarvesterDescriptionAppender"
+			seconds_to_fully_regenerate_hull="600"
+			hacking_to_grant_on_death="2"
+			display_name_for_sidebar = "EV Dire Macrophage"
+      
+      priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="BigFavoriteToy"
+			>
+	<system name="W1" display_name="Osteoclast Jaws"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="3900" range="AboveAverage3" shot_speed="Normal" rate_of_fire="Devourer"
+				shots_per_salvo="16" fires_salvos_sequentially="false"
+				shot_type_data="DevourerShot_Nemesis"
+				area_of_effect_size="600"
+                aoe_spreads_damage_among_available_targets="true"				
+				health_change_per_damage_dealt="0.5"
+				>			
+    </system>
+	<system name="WS" display_name="Osteoclast Railgun"
+	        category="Weapon" firing_timing="OnlyInRange"
+	        damage_per_shot="3600" range="AboveAverage3" shot_speed="Normal" rate_of_fire="Misery" 
+			shots_per_salvo="20" shots_per_target="20" fires_salvos_sequentially="true"
+	        shot_type_data="ExtremeLongRangeRailgun"
+			health_change_per_damage_dealt="0.5"				
+	        >
+    </system>
+	<system name="Q1" display_name="Osteoclast Inhibitors"
+				category="Weapon" firing_timing="OnlyInRange" range="AboveAverage3" shot_speed="VeryFast" rate_of_fire="Misery" fires_salvos_sequentially="false"
+				damage_per_shot="240" added_target_evaluator="WeaponJamAsPrimary"
+				shots_per_salvo="64"	
+				shot_type_data="EnergyWave"	
+				base_enemy_weapon_reload_slowing_seconds_per_shot="12"
+				max_enemy_weapon_reload_slowing_seconds="20"
+				enemy_weapon_reload_slowing_to_armor_mm_less_than="101"
+				health_change_per_damage_dealt="0.5"	
+				>
+				<outgoing_damage_modifier based_on="Armor_mm" comparison_type="AtMost" compared_to="30" multiplier="3" />
+    </system>	
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_science_to_grant_on_death="150"
+			necromancer_hacking_to_grant_on_death="3"/>	
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+  
+  <!-- Siege Stuff -->
+  <entity name="DireMacrophageBorer"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="DireMacrophageBorer,NanocaustsToLich,,BecomesNecromancyMummy"
+			special_entity_type="LargeShipNotStackable"
+			gimbal_icon_size_multiplier="1"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
+      icon_name="Ships1/MacrophageHarvester"
+			uses_large_health_bar="true"
+			category="Ship"
+			size_scale="6"
+			visuals_scale_multiplier="3"
+			y_offset_of_icon="10"
+			collision_priority="100"
+			display_name="Dire Macrophage Borer"
+			description="A very novel product of the Dire Telium, this Macrophage is tasked with destroying structures to make headway for the average harvester."
+			starting_mark_level="Mark1"
+			cost_for_ai_to_purchase="75000"			
+			hull_points="1000000" shield_points="2500000" speed="Normal3"
+			metal_cost="2000000" energy_consumption="10000"
+			armor_mm="200" albedo="0.8" engine_gx="22" mass_tx="10"
+			ship_or_structure_explosion_sfx="ShipGuardian_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			speed_multiplier_first_5_seconds_on_planet="2"
+			description_appender_dll="DireMacrophageFactionBaseInfo"
+			description_appender_type="Arcen.AIW2.External.DireBorerDescriptionAppender"
+			display_name_for_sidebar = "Dire Borer"
+      
+      priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="BigFavoriteToy"
+			>
+	<system name="WS" display_name="Osteoclast Mutilating Bomb"
+	        category="Weapon" firing_timing="OnlyInRange"
+	        damage_per_shot="250000" range="EssentiallyInfinite" shot_speed="Normal" rate_of_fire="Misery"  fires_salvos_sequentially="true"
+	        shot_type_data="MassDriver"
+			only_targets_static_units="true"	
+			health_change_by_max_health_divided_by_this_per_attack="-20"	
+			base_percent_damage_bypasses_personal_shields="1" 			
+	        >
+    </system>
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+  
+  <!-- Macrophage Carriers -->
+  <entity name="DireMacrophageCarrierHarvester"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="DireMacrophageHarvester,RegularDireMacrophageCarrier,NanocaustsToLich,,BecomesNecromancyMummy,GeneratesBonusHunterShips"
+			special_entity_type="LargeShipNotStackable"
+			gimbal_icon_size_multiplier="1.25"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
+      icon_name="Ships1/MacrophageHarvester"
+			uses_large_health_bar="true"
+			category="Ship"
+			size_scale="7"
+			visuals_scale_multiplier="3"
+			y_offset_of_icon="10"
+			collision_priority="100"
+			display_name="Dire Macrophage Carrier"
+			display_name_for_sidebar="Macrophage Carrier"
+			description="The Dire Macrophage Carrier harvests metal from other ships and structures and feeds its associated Telium. A mutation of the Macrophage unleashing swarms upon its ennemies.Gets ignored by almost everything in favor of its drones, but you probably shouldn't."
+			starting_mark_level="Mark1"
+			fleet_design_template_i_use_for_drones="MacrophageDrones"
+			drone_starting_behavior_type="Attacker_Full"
+			cost_for_ai_to_purchase="25000"			
+			hull_points="1800000" shield_points="1200000" speed="Normal1"
+			metal_cost="2500000" energy_consumption="30000"
+			armor_mm="90" albedo="0.7" engine_gx="20" mass_tx="7"
+			ship_or_structure_explosion_sfx="ShipGuardian_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			speed_multiplier_first_5_seconds_on_planet="2"
+			seconds_to_fully_regenerate_hull="240"
+			description_appender_dll="DireMacrophageFactionBaseInfo"
+			description_appender_type="Arcen.AIW2.External.DireHarvesterDescriptionAppender"
+      
+      priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="SlightlyLessExpendable"
+			>
+	<metal_flow purpose="BuildingDronesInternally" throughput="800" increase_per_mark_level="100"/>
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+	<ship_class_data can_be_zombified_and_similar="false" />
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_science_to_grant_on_death="50"/>	
+  </entity>
+  
+  <entity name="EvolvedDireMacrophageCarrierHarvester"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="EvolvedDireMacrophageHarvester,RegularEvolvedDireMacrophageCarrier,NanocaustsToLich,,BecomesNecromancyMummy,GeneratesBonusHunterShips,ShowsOnNormalDisplayMode"
+			special_entity_type="LargeShipNotStackable"
+			gimbal_icon_size_multiplier="1.25"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
+      icon_name="Ships1/MacrophageHarvester"
+			uses_large_health_bar="true"
+			draw_in_galaxy_view="true"
+			category="Ship"
+			size_scale="7"
+			visuals_scale_multiplier="3"
+			y_offset_of_icon="10"
+			collision_priority="100"
+			display_name="Evolved Dire Macrophage Carrier"
+			display_name_for_sidebar="EV Macro Carrier"
+			description="The Evolved Dire Macrophage Carrier harvests metal from other ships and structures and feeds its associated Telium. A mutation of the Macrophage unleashing swarms upon its ennemies. Gets ignored by almost everything in favor of its drones, but you probably shouldn't. Due to evolving past the limits of a normal carrier, it is able to release more drones faster, and gained an extra type. Very aggressive."
+			starting_mark_level="Mark1"
+			fleet_design_template_i_use_for_drones="MacrophageDronesLarge"
+			drone_starting_behavior_type="Attacker_Full"
+			cost_for_ai_to_purchase="25000"			
+			hull_points="3600000" shield_points="2400000" speed="Normal1"
+			metal_cost="2500000" energy_consumption="30000"
+			armor_mm="110" albedo="0.8" engine_gx="22" mass_tx="10"
+			ship_or_structure_explosion_sfx="ShipGuardian_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			speed_multiplier_first_5_seconds_on_planet="2"
+			hacking_to_grant_on_death="2"
+			seconds_to_fully_regenerate_hull="180"
+			description_appender_dll="DireMacrophageFactionBaseInfo"
+			description_appender_type="Arcen.AIW2.External.EvolvedDireHarvesterDescriptionAppender"
+      
+      priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="SlightlyLessExpendable"
+			>
+	<metal_flow purpose="BuildingDronesInternally" throughput="2000" increase_per_mark_level="250"/>
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+	<ship_class_data can_be_zombified_and_similar="false" />
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_science_to_grant_on_death="150"
+			necromancer_hacking_to_grant_on_death="3"/>
+  </entity> 
+  
+  
+  <!-- Macrophage Drones -->
+  <entity name="MacrophageDrone"
+		tags="MacrophageCarrierDrone"
+         thematic_groups="Drone"  
+            special_entity_type="DroneGeneral"
+			visuals="assets/_finalgamemeshes/guardians/teuthidaguardiandrone/teuthidaguardiandrone.prefab"
+            icon_name="Ships1/Teuthida" icon_overlay="Overlays1/Drone" gimbal_icon_size_multiplier="0.6"
+			voice_group="Melee"
+			category="Ship"
+			size_scale="1"
+			visuals_scale_multiplier="4"
+			collision_priority="100"
+			display_name="Macrophage High Impact Drone"
+			display_name_for_sidebar="Macrophage HI DRN"
+			description="Macrophage Drone boasting excellent firepower against high albedo high mass targets. A bit lacking otherwise."
+			starting_mark_level="Mark1"
+			self_attritions_X_percent_per_second_if_parent_ship_not_on_planet="20"
+			cost_for_ai_to_purchase="10"
+			hull_points="25000" shield_points="7500" speed="AboveAverage5"
+			metal_cost="1250" energy_consumption="200"
+			armor_mm="30" albedo="0.7" engine_gx="7" mass_tx="0.21"
+			ship_or_structure_explosion_sfx="ShipSmall_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLostOnOtherPlanet_Explosion"
+      priority_as_ai_target="NormalFleetship" priority_as_frd_target="NormalFleetship" priority_to_protect="Expendable"
+			>
+    <fleet_membership name="MacrophageDrones" ship_cap_group="Strike" weight="100" cap="9"/>
+	<fleet_membership name="MacrophageDronesLarge" ship_cap_group="Strike" weight="100" cap="18"/>
+	<fleet_membership name="MacrophageDronesImmense" ship_cap_group="Strike" weight="100" cap="54"/>
+    <system name="Q1" display_name="Osteoclast Ablative Sabot"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="300" range="AboveAverage3" shot_speed="Normal" rate_of_fire="Misery" fires_salvos_sequentially="false"
+				shot_type_data="EnergyWave"
+				>
+				<outgoing_damage_modifier based_on="mass_tx" comparison_type="AtLeast" compared_to="2" multiplier="5" />
+				<outgoing_damage_modifier based_on="Albedo" comparison_type="AtLeast" compared_to="0.7" multiplier="2" />
+    </system>
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>  
+  
+  <entity name="MacrophageCrowdControlDrone"
+		tags="MacrophageCarrierDrone"
+         thematic_groups="Drone"  
+            special_entity_type="DroneGeneral"
+			visuals="Assets/_FinalGameMeshes/AIExtragalactic/Tier2_ExtragalacticReanimator/Tier2_ExtragalacticReanimatorDrone.prefab"
+      icon_name="Ships2/SomethingAperture" icon_overlay="Overlays1/Drone" gimbal_icon_size_multiplier="0.6"
+			voice_group="Melee"
+			category="Ship"
+			size_scale="1"
+			visuals_scale_multiplier="4"
+			collision_priority="100"
+			display_name="Macrophage Fleet Control Drone"
+			display_name_for_sidebar="Macrophage FL DRN"
+			description="Macrophage Drone made to deal with fleets. Good against strikecraft."
+			starting_mark_level="Mark1"
+			self_attritions_X_percent_per_second_if_parent_ship_not_on_planet="20"
+			cost_for_ai_to_purchase="10"
+			hull_points="35000" shield_points="10000" speed="AboveAverage5"
+			metal_cost="1250" energy_consumption="200"
+			armor_mm="30" albedo="0.7" engine_gx="7" mass_tx="0.21"
+			ship_or_structure_explosion_sfx="ShipSmall_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLostOnOtherPlanet_Explosion"
+      priority_as_ai_target="NormalFleetship" priority_as_frd_target="NormalFleetship" priority_to_protect="Expendable"
+			>
+    <fleet_membership name="MacrophageDrones" ship_cap_group="Strike" weight="100" cap="9"/>
+	<fleet_membership name="MacrophageDronesLarge" ship_cap_group="Strike" weight="100" cap="18"/>
+	<fleet_membership name="MacrophageDronesImmense" ship_cap_group="Strike" weight="100" cap="54"/>
+    <system name="W1" display_name="Osteoclast Scattering Blast"
+	    category="Weapon" firing_timing="OnlyInRange"
+	    damage_per_shot="75" range="Normal3" shot_speed="Normal" rate_of_fire="High"
+	    shots_per_salvo="10" fires_salvos_sequentially="false"
+	    shot_type_data="DevourerShot_Nemesis"
+	    area_of_effect_size="600"
+	    maximum_number_of_targets_hit_per_shot="10"
+	    >
+    </system>
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+  
+  <entity name="MacrophageSuicideDrone"
+		tags="MacrophageCarrierDrone"
+         thematic_groups="Drone"  
+            special_entity_type="DroneGeneral"
+			visuals="Assets/_FinalGameMeshes/FleetShips/AutoBomb/AutoBomb.prefab" 
+			icon_name="Ships1/AutoBomb" icon_overlay="Overlays1/Drone" gimbal_icon_size_multiplier="0.6"
+			voice_group="Melee"
+			category="Ship"
+			size_scale="1"
+			visuals_scale_multiplier="4"
+			collision_priority="100"
+			display_name="Macrophage Amplifier Drone"
+			display_name_for_sidebar="Macrophage AMP DRN"
+			description="Macrophage Drone made that suicides and afflicts ennemies with a large amount of damage amplification."
+			starting_mark_level="Mark1"
+			self_attritions_X_percent_per_second_if_parent_ship_not_on_planet="20"
+			cost_for_ai_to_purchase="10"
+			hull_points="35000" shield_points="10000" speed="AboveAverage5"
+			metal_cost="500" energy_consumption="200"
+			armor_mm="30" albedo="0.7" engine_gx="7" mass_tx="0.21"
+			ship_or_structure_explosion_sfx="ShipSmall_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLostOnOtherPlanet_Explosion"
+      priority_as_ai_target="NormalFleetship" priority_as_frd_target="NormalFleetship" priority_to_protect="Expendable"
+			>
+	<fleet_membership name="MacrophageDronesLarge" ship_cap_group="Strike" weight="100" cap="18"/>
+	<fleet_membership name="MacrophageDronesImmense" ship_cap_group="Strike" weight="100" cap="54"/>
+	<system name="WM" display_name="Detonation"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="420" range="AlmostNone" seek_range="Normal1" shot_speed="Instant" rate_of_fire="Devourer" fires_salvos_sequentially="false"
+				shot_type_data="ExplosiveFlakBurst"
+				area_of_effect_size="1000"
+				maximum_number_of_targets_hit_per_shot="15"				
+				health_change_by_max_health_divided_by_this_per_attack="-1"
+				damage_amplification="true" damage_amplification_duration="4" damage_amplification_mult="2"
+				>
+		</system>
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+ 
+  
+  <!-- Macrophage Defense -->
+  <!-- Maybe remove planet control, need to change the description appender -->
+  <entity name="DireMacrophageDefense"
+	        thematic_groups="Hidden,VeryMinorAliens"
+			npc_ship_cap_type="SpecialDefenses"
+	    tags="DireMacrophageDefense,InvulnerabilityGranter, SapperImportantPoint,HackForShipType"
+	    visuals="assets/_dlc2/zenith/dzepistyle/dzepistylepiratical.prefab" visuals_bundle="exp2_zenith_onslaught"
+	    icon_name="Ships3/DarkZenithEpistyle_Pirate"
+		gimbal_icon_size_multiplier="1.25"
+	    y_offset_of_icon="30"
+	    voice_group="Silent"
+	    category="Ship"
+	    size_scale="8" lod_distance_multiplier="3"
+	    visuals_scale_multiplier="22"
+	    y_offset_of_ship_in_visual_space="0"
+	    collision_priority="810"
+	    display_name="Dire Macrophage Bastion"
+		display_name_for_sidebar="Dire Macro Bastion"
+	    description="Stationary defense used by the Dire Macrophage to mark their territory. Grants a bigger bonus income to its Dire Telium than normal Harvesters would, with two thirds of it stored locally, meaning that destroying this bastion would reduce the Dire Telium's income. Also grants invulnerability to all Telia in the galaxy."
+	    behavior="Stationary"
+	    starting_mark_level="Mark1"
+        grants_minor_faction_planet_control="true" 
+	    cost_for_ai_to_purchase="5600"
+        hull_points="1500000" shield_points="750000" speed="Immobile"
+        metal_cost="1000000" energy_consumption="15000"
+        armor_mm="200" albedo="0.6" mass_tx="7"
+		allied_speed_multiplier="1.20"
+		seconds_to_fully_regenerate_hull="600"
+		eligible_for_hacks="HackToGrantShipLine_DireMacrophage"
+        ship_or_structure_explosion_sfx="ShipLostMassive_Explosion"
+        ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+        ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+        priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="SlightlyLessExpendable"
+        description_appender_dll="DireMacrophageFactionBaseInfo"
+	    description_appender_type="Arcen.AIW2.External.DefenseMacrophageAppender"
+		grants_stuff_to_be_added_to_player_fleets="true"
+        grants_stuff_to_be_added_to_player_fleets_strikecraft_options="2"
+            >
+			<system name="T" display_name="Tachyon Array"
+			category="Passive" tachyon_points="50" tachyon_range="EssentiallyInfinite" tachyon_hits_albedo_less_than="0.75">
+	</system>
+    <system name="W1" display_name="Osteoclast Jaws"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="3900" range="High1" shot_speed="Normal" rate_of_fire="Devourer"
+				shots_per_salvo="16" fires_salvos_sequentially="false"
+				shot_type_data="DevourerShot_Nemesis"
+				area_of_effect_size="600"
+                aoe_spreads_damage_among_available_targets="true"				
+				health_change_per_damage_dealt="0.5"
+				>			
+    </system>
+    <system name="WS" display_name="Osteoclast Bomb"
+	        category="Weapon" firing_timing="OnlyInRange"
+	        damage_per_shot="85000" range="High1" shot_speed="Normal" rate_of_fire="Misery"  fires_salvos_sequentially="true"
+	        shot_type_data="MassDriver"
+			health_change_per_damage_dealt="0.5"
+	        >
+    </system>	
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_resource_one_to_grant_on_death="5"/>
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+    </entity>
+	
+	<entity name="DireMacrophageLesserDefense"
+	        thematic_groups="Hidden,VeryMinorAliens"
+			npc_ship_cap_type="SpecialDefenses"
+	    tags="DireMacrophageLesserDefense,SapperImportantPoint"
+	    visuals="Assets/_DLC3/Clanlings/NeinzulClanlingCassowary/NeinzulClanlingCassowary.prefab" visuals_bundle="exp3_neinzul_abyss"
+	    icon_name="Ships4/Necrobomb"
+		gimbal_icon_size_multiplier="1"
+	    y_offset_of_icon="30"
+	    voice_group="Silent"
+	    category="Ship"
+	    size_scale="4" lod_distance_multiplier="3"
+	    visuals_scale_multiplier="22"
+	    y_offset_of_ship_in_visual_space="0"
+	    collision_priority="810"
+	    display_name="Dire Macrophage Fortification"
+		display_name_for_sidebar="Dire Macro Fort"
+	    description="A lesser kind of defense used by the Dire Macrophage. Behaves like its big brother in most cases, but does not grant invulnerability to Dire Telia."
+	    behavior="Stationary"
+	    starting_mark_level="Mark1"
+        grants_minor_faction_planet_control="true" 
+	    cost_for_ai_to_purchase="5600"
+        hull_points="500000" shield_points="250000" speed="Immobile"
+        metal_cost="2500000" energy_consumption="5000"
+        armor_mm="120" albedo="0.6" mass_tx="7"
+		seconds_to_fully_regenerate_hull="600"
+        ship_or_structure_explosion_sfx="ShipLostMassive_Explosion"
+        ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+        ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+        priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="SlightlyLessExpendable"
+        description_appender_dll="DireMacrophageFactionBaseInfo"
+	    description_appender_type="Arcen.AIW2.External.DefenseMacrophageAppender"
+            >
+    <system name="W1" display_name="Osteoclast Jaws"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="1300" range="High1" shot_speed="Normal" rate_of_fire="Devourer"
+				shots_per_salvo="16" fires_salvos_sequentially="false"
+				shot_type_data="DevourerShot_Nemesis"
+				area_of_effect_size="600"
+                aoe_spreads_damage_among_available_targets="true"				
+				health_change_per_damage_dealt="0.5"
+				>			
+    </system>
+    <system name="WS" display_name="Osteoclast Bomb"
+	        category="Weapon" firing_timing="OnlyInRange"
+	        damage_per_shot="28000" range="High1" shot_speed="Normal" rate_of_fire="Misery"  fires_salvos_sequentially="true"
+	        shot_type_data="MassDriver"
+			health_change_per_damage_dealt="0.5"
+	        >
+    </system>	
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_resource_one_to_grant_on_death="2"/>
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+    </entity>
+	
+	
+	<!-- Mobile economic units -->
+        <entity name="MacrophageConstructor"
+		    thematic_groups="Hidden,VeryMinorAliens"
+            tags="DireMacrophageConstructor"
+            special_entity_type="LargeShipNotStackable"
+            visuals="assets/_dlc2/zenith/dzconstructor/dzconstructor.prefab" visuals_bundle="exp2_zenith_onslaught"
+		    icon_name="Ships1/Parasite"
+			gimbal_icon_size_multiplier="1.2"
+		    y_offset_of_icon="30"
+		    voice_group="Silent"
+		    category="Ship"
+		    size_scale="5.2"
+		    visuals_scale_multiplier="20"  lod_distance_overrides="150,240,15000"
+		    collision_priority="900"
+		    display_name="Dire Macrophage Mutator"
+			display_name_for_sidebar="Macro Mutator"
+		    description="The Mutator is a ship used to transform into Dire Macrophage defensive structures."
+		    starting_mark_level="Mark1"
+	        cost_for_ai_to_purchase="10"
+		    hull_points="500000" shield_points="250000" speed="VeryVeryLittle1"
+		    metal_cost="250000" energy_consumption="200"
+		    armor_mm="80" albedo="0.45" engine_gx="14" mass_tx="7"
+		    ship_or_structure_explosion_sfx="ShipSmall_Explosion"
+		    ship_or_structure_explosion_if_on_other_planet_sfx="ShipLostOnOtherPlanet_Explosion"
+            priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="Expendable"
+			>
+	<ship_class_data can_be_zombified_and_similar="false" />
+    </entity>
+  
+  
+  
+  
+	<!--Human strikecraft equivalent for Macrophage drones -->
+	<entity name="MacrophageHumanDrone"
+		tags="DireMacrophageInfestationHackable,DireMacrophageInfestation"
+         thematic_groups="Strikecraft"  
+			visuals="assets/_finalgamemeshes/guardians/teuthidaguardiandrone/teuthidaguardiandrone.prefab"
+            icon_name="Ships1/Teuthida" gimbal_icon_size_multiplier="1"
+			voice_group="Melee"
+			category="Ship"
+			size_scale="1"
+			visuals_scale_multiplier="4"
+			collision_priority="100"
+			display_name="Lured Macrophage High Impact Drone"
+			display_name_for_sidebar="Lured HI DRN"
+			description="Macrophage Drone lured to our side. Its capabilities are slightly degraded to be able to live on."
+			starting_mark_level="Mark1"
+			cost_for_ai_to_purchase="10"
+			tech_upgrades_that_benefit_me="Alien"
+			mark_level_scale_style="Original"
+			hull_points="15000" shield_points="4000" speed="AboveAverage5"
+			metal_cost="8000" energy_consumption="200"
+			armor_mm="30" albedo="0.7" engine_gx="7" mass_tx="0.21"
+			ship_or_structure_explosion_sfx="ShipSmall_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLostOnOtherPlanet_Explosion"
+      priority_as_ai_target="NormalFleetship" priority_as_frd_target="NormalFleetship" priority_to_protect="Expendable"
+	  is_strikecraft="true"
+			>
+			<fleet_membership name="AddedToFleet_MinorFaction" ship_cap_group="Strike" weight="100" cap="9" faction="DireMacrophageInfestation"/>
+    <system name="Q1" display_name="Osteoclast Ablative Sabot"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="200" range="AboveAverage3" shot_speed="Normal" rate_of_fire="Misery" fires_salvos_sequentially="false"
+				shot_type_data="EnergyWave"
+				>
+				<outgoing_damage_modifier based_on="mass_tx" comparison_type="AtLeast" compared_to="2" multiplier="5" />
+				<outgoing_damage_modifier based_on="Albedo" comparison_type="AtLeast" compared_to="0.7" multiplier="2" />
+    </system>
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>  
+  
+  <entity name="MacrophageHumanCrowdControlDrone"
+		tags="DireMacrophageInfestationHackable,DireMacrophageInfestation"
+         thematic_groups="Strikecraft"  
+			visuals="Assets/_FinalGameMeshes/AIExtragalactic/Tier2_ExtragalacticReanimator/Tier2_ExtragalacticReanimatorDrone.prefab"
+      icon_name="Ships2/SomethingAperture" gimbal_icon_size_multiplier="1"
+			voice_group="Melee"
+			category="Ship"
+			size_scale="1"
+			visuals_scale_multiplier="4"
+			collision_priority="100"
+			display_name="Lured Macrophage Crowd Control Drone"
+			display_name_for_sidebar="Lured CC DRN"
+			description="Macrophage Drone lured to our side. Its capabilities are slightly degraded to be able to live on."
+			starting_mark_level="Mark1"
+			tech_upgrades_that_benefit_me="Alien"
+			mark_level_scale_style="Original"
+			cost_for_ai_to_purchase="10"
+			hull_points="20000" shield_points="6000" speed="AboveAverage5"
+			metal_cost="8000" energy_consumption="200"
+			armor_mm="30" albedo="0.7" engine_gx="7" mass_tx="0.21"
+			ship_or_structure_explosion_sfx="ShipSmall_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLostOnOtherPlanet_Explosion"
+      priority_as_ai_target="NormalFleetship" priority_as_frd_target="NormalFleetship" priority_to_protect="Expendable"
+	  is_strikecraft="true"
+			>
+			<fleet_membership name="AddedToFleet_MinorFaction" ship_cap_group="Strike" weight="100" cap="9" faction="DireMacrophageInfestation"/>
+    <system name="W1" display_name="Osteoclast Scattering Blast"
+	    category="Weapon" firing_timing="OnlyInRange"
+	    damage_per_shot="40" range="Normal3" shot_speed="Normal" rate_of_fire="High"
+	    shots_per_salvo="10" fires_salvos_sequentially="false"
+	    shot_type_data="DevourerShot_Nemesis"
+	    area_of_effect_size="600"
+	    maximum_number_of_targets_hit_per_shot="10"
+	    >
+    </system>
+	<ship_class_data can_be_zombified_and_similar="false" />
+  </entity>
+  
+  
+  
+  <!-- Macrophage Coloniser -->
+  <entity name="DireMacrophageColoniser"
+            thematic_groups="Hidden,VeryMinorAliens"
+			tags="DireMacrophageColoniser,NanocaustsToLich,BecomesNecromancyWight,GeneratesBonusHunterShips,ShowsOnNormalDisplayMode"
+			special_entity_type="LargeShipNotStackable"
+			gimbal_icon_size_multiplier="2"
+			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
+      icon_name="Ships1/MacrophageHarvester"
+			uses_large_health_bar="true"
+			draw_in_galaxy_view="true"
+			category="Ship"
+			size_scale="16"
+			visuals_scale_multiplier="6"
+			y_offset_of_icon="10"
+			collision_priority="100"
+			display_name="Dire Macrophage Coloniser"
+			description="A Dire Macrophage ship as powerful as it is rare, it combines the weapons and abilities of the harvester and carrier, and magnifies them. This monstrosity's task is to transform into a new Dire Telium."
+			starting_mark_level="Mark1"
+			cost_for_ai_to_purchase="250000"			
+			hull_points="25000000" shield_points="12500000" speed="AlmostNone"
+			metal_cost="15000000" energy_consumption="150000"
+			armor_mm="600" albedo="0.8" engine_gx="26" mass_tx="12"
+			fleet_design_template_i_use_for_drones="MacrophageDronesImmense"
+			drone_starting_behavior_type="Attacker_Full"
+			ship_or_structure_explosion_sfx="ShipGuardian_Explosion"
+			ship_or_structure_explosion_if_on_other_planet_sfx="ShipLargeLostOnOtherPlanet_Explosion"
+			ship_or_structure_explosion_sfx_happens_if_not_mine_and_on_other_planet="true"
+			voice_group="Silent"
+			seconds_to_fully_regenerate_hull="600"
+			hacking_to_grant_on_death="10"
+			display_name_for_sidebar = "Macro Coloniser"
+      
+      priority_as_ai_target="MidNasty" priority_as_frd_target="MidNasty" priority_to_protect="BigFavoriteToy"
+			>
+	<system name="W1" display_name="Osteoclast Jaws"
+				category="Weapon" firing_timing="OnlyInRange"
+				damage_per_shot="13650" range="AboveAverage3" shot_speed="Normal" rate_of_fire="Devourer"
+				shots_per_salvo="16" fires_salvos_sequentially="false"
+				shot_type_data="DevourerShot_Nemesis"
+				area_of_effect_size="600"
+                aoe_spreads_damage_among_available_targets="true"				
+				health_change_per_damage_dealt="0.5"
+				>			
+    </system>
+	<system name="WS" display_name="Osteoclast Railgun"
+	        category="Weapon" firing_timing="OnlyInRange"
+	        damage_per_shot="12600" range="AboveAverage3" shot_speed="Normal" rate_of_fire="Misery" 
+			shots_per_salvo="20" shots_per_target="20" fires_salvos_sequentially="true"
+	        shot_type_data="ExtremeLongRangeRailgun"
+			health_change_per_damage_dealt="0.5"				
+	        >
+    </system>
+	<system name="Q1" display_name="Osteoclast Inhibitors"
+				category="Weapon" firing_timing="OnlyInRange" range="AboveAverage3" shot_speed="VeryFast" rate_of_fire="Misery" fires_salvos_sequentially="false"
+				damage_per_shot="240" added_target_evaluator="WeaponJamAsPrimary"
+				shots_per_salvo="192"	
+				shot_type_data="EnergyWave"	
+				base_enemy_weapon_reload_slowing_seconds_per_shot="12"
+				max_enemy_weapon_reload_slowing_seconds="20"
+				enemy_weapon_reload_slowing_to_armor_mm_less_than="101"
+				health_change_per_damage_dealt="0.5"	
+				>
+				<outgoing_damage_modifier based_on="Armor_mm" comparison_type="AtMost" compared_to="30" multiplier="3" />
+    </system>	
+	<metal_flow purpose="BuildingDronesInternally" throughput="6000" increase_per_mark_level="750"/>
+	<incoming_damage_modifier based_on="AttackDistance" comparison_type="GreaterThan" compared_to="4480" multiplier="0.25" />	
+	<ship_class_data can_be_zombified_and_similar="false" />
+	<data_extension name="DLC3" required_expansion_list="3_The_Neinzul_Abyss"
+            necromancer_hacking_to_grant_on_death="20"
+            necromancer_resource_one_to_grant_on_death="50"/>
+  </entity>
+</root>

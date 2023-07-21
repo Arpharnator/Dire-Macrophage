@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <item name="DireMacrophagePerHarvesterBaseInfo" dll_name="DireMacrophageFactionBaseInfo" type_name="Arcen.AIW2.External.DireMacrophagePerHarvesterBaseInfo" />
+  <item name="DireMacrophagePerTeliumBaseInfo" dll_name="DireMacrophageFactionBaseInfo" type_name="Arcen.AIW2.External.DireMacrophagePerTeliumBaseInfo" />
+  <item name="DireMacrophagePerConstructorBaseInfo" dll_name="DireMacrophageFactionBaseInfo" type_name="Arcen.AIW2.External.DireMacrophagePerConstructorBaseInfo" />
+  <item name="DireMacrophagePerDefenseBaseInfo" dll_name="DireMacrophageFactionBaseInfo" type_name="Arcen.AIW2.External.DireMacrophagePerDefenseBaseInfo" />
+</root>

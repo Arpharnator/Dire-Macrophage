@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <faction name="DireMacrophageInfestation" 
+    display_name="Dire Macrophage Infestation" short_name="Dire Macrophage" processing_group="DireMacrophage"
+    base_info_source="DireMacrophageFactionBaseInfo" deep_info_source="DireMacrophageFactionDeepInfo" team_center_color="c50C878" team_border_color="cC41E3A"
+    type="SpecialFaction"
+    description="The galaxy is being invaded by a stronger variant of enormous biological Macrophages. They prey on the AI alongside regular Macrophages for metal, and will try to eat your ships, too.
+
+&lt;color=#f25e1c&gt; HIGH IMPACT:&lt;/color&gt; This faction expands, although in a different manner than their original counterparts, and typically doesn't do irreparable damage early on. Although a bit slow in the beginning, it becomes stronger over time, and can become very impactful. The more fighting there is the stronger you can expect this faction to become, so long the scales aren't completely overwhelming.
+
+Setting this equal to AI main difficulty is good."
+		ai_can_send_waves_against_this="true" 
+		can_use_spire_debris="false"
+		impact="Moderate" 
+		CanBeFriendlyToPlayer="true" 
+		CanBeHostileToAll="true" 
+		CanBeOnMinorFactionTeam="true" 
+		icon_name_for_lobby="Ships1/MacrophageHarvester"
+		defeat_condition="HasNoStrength">
+        <npc_ship_cap name="Strikecraft"    overriding_per_faction_cap_of_stacks="2000" />
+        <custom_field name="Intensity"      display_name="Intensity" description="Just how terrifying is this faction?" sort_group="200" setting_type="IntSlider" default="5" min="1" max="10"/>
+        <custom_field name="Allegiance"     display_name="Allegiance" description="Is this faction friendly to the AI(s), humans, or nobody?" sort_group="250" setting_type="CustomDropdownArbitraryOptions" arbitrary_options="Hostile To All,Friendly To Players,Hostile To Players Only,Minor Faction Team Red,Minor Faction Team Blue,Minor Faction Team Green" default_option="Hostile To All" />
+        <custom_field name="SpawningOptions" display_name="Spawning Options" description="Modifies the spawning style of this faction.
+Default spawns a single Telium, somewhere in the galaxy."
+    sort_group="300" 
+    setting_type="CustomDropdownArbitraryOptions" 
+    arbitrary_options="Default" 
+    default_option="Default" />
+    </faction>
+</root>

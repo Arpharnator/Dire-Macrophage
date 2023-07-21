@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+<item name="HackToGrantShipLine_DireMacrophage" copy_from="HackToGrantShipLine" dll_name="AIWarExternalCode" type_name="Arcen.AIW2.External.Hacking_GrantShipLine" 
+        display_name="Lure Dire Macrophage Ship Line" description="Hacking this Bastion will give the Fleet that did it a few of the Dire Macrophage ships. And destroy the Bastion."
+		hack_duration="60"
+        primary_hacking_response_interval="45"
+        primary_response_strength_per_interval="1.5"
+		secondary_hacking_response_interval="30"
+		secondary_response_strength_per_interval="0.8"
+		number_of_times_individual_unit_can_be_hacked="1"
+        cost_in_hacking_points="20"
+        local_hacker_required="true"
+        hack_is_against_planet="false"
+        use_closest_hacker_for_check="true"
+        choose_a_specific_ship_line_to_grant="true"
+        choice_text="Which ship line would you like to add to the fleet of this hacker?"
+        choice_text_height="60"
+        relatedstring_is_a_ship_type="true"
+        exo_on_completion="false"
+		is_a_grant_ship_style_hack="true"
+/>
+
+
+</root>
