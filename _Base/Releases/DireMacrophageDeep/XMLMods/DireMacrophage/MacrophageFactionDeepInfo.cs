@@ -34,6 +34,7 @@ namespace Arcen.AIW2.External
             int numToSeed = 1;
 
             ThrowawayListCanMemLeak<Planet> planetsSeededOn = null;
+            //Do not seed this close to AI and Human homeworld. Can be really really annoying and also take out the AI homeworld fast if close enough.
             if ( AttachedFaction.GetBoolValueForCustomFieldOrDefaultValue( "SeedOnNomadIfPossible", false ) ) //this field won't exist unless DLC2 is installed
                 planetsSeededOn = StandardMapPopulator.Mapgen_SeedSpecialEntities( Context, galaxy, AttachedFaction, SpecialEntityType.None, DireMacrophageFactionBaseInfo.DireTeliumTag, SeedingType.HardcodedCount, numToSeed,
                                                                           MapGenCountPerPlanet.One, MapGenSeedStyle.FullUseByFactionOnNomadIfPossible, 6, 6, PlanetSeedingZone.MostAnywhere, SeedingExpansionType.ComplicatedOriginal );
@@ -612,6 +613,7 @@ namespace Arcen.AIW2.External
 
                 //Macrophage Constructors
                 //Roams around randomly until it finds a planet without three bastions and spawns one.
+                //ABSOLUTELY DISASTROUS CODE!!!!!!!!!!!!!!!!!!!!!!!
                 AttachedFaction.DoForEntities(DireMacrophageFactionBaseInfo.DireMacrophageConstructor, delegate (GameEntity_Squad entity)
                 {
                     DireMacrophagePerConstructorBaseInfo cData = entity.TryGetExternalBaseInfoAs<DireMacrophagePerConstructorBaseInfo>();

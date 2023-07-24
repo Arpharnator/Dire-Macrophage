@@ -8,7 +8,6 @@
         primary_response_strength_per_interval="1.5"
 		secondary_hacking_response_interval="30"
 		secondary_response_strength_per_interval="0.8"
-		number_of_times_individual_unit_can_be_hacked="1"
         cost_in_hacking_points="20"
         local_hacker_required="true"
         hack_is_against_planet="false"
