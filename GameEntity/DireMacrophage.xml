@@ -461,6 +461,7 @@
 	    description_appender_type="Arcen.AIW2.External.DefenseMacrophageAppender"
 		grants_stuff_to_be_added_to_player_fleets="true"
         grants_stuff_to_be_added_to_player_fleets_strikecraft_options="2"
+		grants_stuff_to_be_added_to_player_fleets_required_tag="DireMacrophageInfestationHackable"
             >
 			<system name="T" display_name="Tachyon Array"
 			category="Passive" tachyon_points="50" tachyon_range="EssentiallyInfinite" tachyon_hits_albedo_less_than="0.75">
@@ -588,7 +589,7 @@
 			display_name="Lured Macrophage High Impact Drone"
 			display_name_for_sidebar="Lured HI DRN"
 			description="Macrophage Drone lured to our side. Its capabilities are slightly degraded to be able to live on."
-			starting_mark_level="Mark1"
+			starting_mark_level="Mark2"
 			cost_for_ai_to_purchase="10"
 			tech_upgrades_that_benefit_me="Alien"
 			mark_level_scale_style="Original"
@@ -625,7 +626,7 @@
 			display_name="Lured Macrophage Crowd Control Drone"
 			display_name_for_sidebar="Lured CC DRN"
 			description="Macrophage Drone lured to our side. Its capabilities are slightly degraded to be able to live on."
-			starting_mark_level="Mark1"
+			starting_mark_level="Mark2"
 			tech_upgrades_that_benefit_me="Alien"
 			mark_level_scale_style="Original"
 			cost_for_ai_to_purchase="10"

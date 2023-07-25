@@ -12,7 +12,7 @@ namespace Arcen.AIW2.External
 
         //not serialized
         public int EffectiveIntensity = -1;
-
+        public bool SeedNearPlayer = false;
 
         public readonly DoubleBufferedList<SafeSquadWrapper> DireTelia = DoubleBufferedList<SafeSquadWrapper>.Create_WillNeverBeGCed( 300, "DireMacrophage-DireTelia" );
         public readonly DoubleBufferedDictionary<Planet, int> DireTeliaPlanets = DoubleBufferedDictionary<Planet, int>.Create_WillNeverBeGCed( 300, "DireMacrophage-DireTeliaPlanets" );
@@ -120,6 +120,7 @@ namespace Arcen.AIW2.External
         }
         #endregion
 
+
         public DireMacrophageFactionBaseInfoCore()
         {
             Cleanup();
@@ -131,6 +132,7 @@ namespace Arcen.AIW2.External
             //serialized
 
             //not serialized
+            SeedNearPlayer = false;
             EffectiveIntensity = -1;
             DireTelia.Clear();
             DireTeliaPlanets.Clear();

@@ -1,6 +1,6 @@
 ﻿using Arcen.AIW2.Core;
 using System;
-
+using UnityEngine;
 using System.Text;
 using Arcen.Universal;
 
@@ -22,27 +22,185 @@ namespace Arcen.AIW2.External
 
         protected override int MinimumSecondsBetweenLongRangePlannings => 3;
 
+        private void GetGalaxyRadius(out int radius, out ArcenPoint centroid)
+        {
+            var galaxy = World_AIW2.Instance.CurrentGalaxy;
+
+            int totalX = 0;
+            int totalY = 0;
+            int numPlanets = 0;
+            galaxy.DoForPlanetsSingleThread(false,
+                (p) =>
+                {
+                    totalX += p.GalaxyLocation.X;
+                    totalY += p.GalaxyLocation.Y;
+                    numPlanets++;
+                    return DelReturn.Continue;
+                });
+
+            var center = ArcenPoint.Create(totalX / numPlanets, totalY / numPlanets);
+
+            long maxLenSqr = 0;
+            galaxy.DoForPlanetsSingleThread(false,
+                (p) =>
+                {
+                    var d = p.GalaxyLocation.GetSquareDistanceTo(center);
+                    if (d > maxLenSqr)
+                        maxLenSqr = d;
+                    return DelReturn.Continue;
+                });
+
+            radius = (int)Math.Sqrt(maxLenSqr);
+            centroid = center;
+        }
+
+        ArcenPoint RandomPointInRadius(RandomGenerator rand, ArcenPoint pos, int radius)
+        {
+            var vec = Vector2.zero;
+
+            for (int i = 0; i < 100; i++)
+            {
+                vec = new Vector2()
+                {
+                    x = rand.NextFloat(radius * 2) - radius,
+                    y = rand.NextFloat(radius * 2) - radius,
+                };
+
+                var len = vec.magnitude;
+                if (len > radius)
+                    continue;
+
+                vec.x += pos.X;
+                vec.y += pos.Y;
+
+                break;
+            }
+
+            return vec.ToArcenPoint();
+        }
+
+        private Planet CreateSpawnPlanet(ArcenHostOnlySimContext hostCtx, Planet nearbyPlanet)
+        {
+            //ArcenDebugging.ArcenDebugLogSingleLine( string.Format("[nano] CreateSpawnPlanet"), Verbosity.DoNotShow );
+
+            var galaxy = World_AIW2.Instance.CurrentGalaxy;
+            var rand = hostCtx.RandomToUse;
+
+            int galaxy_radius;
+            ArcenPoint galaxy_centroid;
+            GetGalaxyRadius(out galaxy_radius, out galaxy_centroid);
+
+            ArcenPoint planet_pnt = ArcenPoint.ZeroZeroPoint;
+            int cur_radius = galaxy_radius / 4;
+            int radius_step = galaxy_radius / 4;
+            while (true)
+            {
+                // try 10 times at this radius
+                // then increase the radius
+                bool success = false;
+                for (int i = 0; i < 10; i++)
+                {
+                    var pnt = RandomPointInRadius(rand, nearbyPlanet.GalaxyLocation, cur_radius);
+                    if (!galaxy.CheckForTooCloseToExistingNodes(pnt, PlanetType.Normal, true))
+                    {
+                        planet_pnt = pnt;
+                        success = true;
+                        break;
+                    }
+                }
+
+                if (success)
+                    break;
+
+                cur_radius += radius_step;
+            }
+
+            var planet = galaxy.AddPlanet(PlanetType.Normal, planet_pnt, PlanetGravWellSizeTable.Instance.DefaultSize);
+            var playerLocalFaction = planet.GetFirstFactionOfType(FactionType.Player);
+            playerLocalFaction.AIPLeftFromCommandStation = 0;
+            playerLocalFaction.AIPLeftFromWarpGate = 0;
+
+            var cmd = GameCommand.Create(BaseGameCommand.CommandsByCode[BaseGameCommand.Code.LinkPlanets], GameCommandSource.AnythingElse);
+            cmd.RelatedIntegers.Add(planet.Index);
+            cmd.RelatedIntegers.Add(nearbyPlanet.Index);
+            World_AIW2.Instance.QueueGameCommand(this.AttachedFaction, cmd, false);
+
+            return planet;
+        }
+
         #region SeedStartingEntities_EarlyMajorFactionClaimsOnly
-        public override void SeedStartingEntities_EarlyMajorFactionClaimsOnly( Galaxy galaxy, ArcenHostOnlySimContext Context, MapTypeData mapType )
+        private readonly List<Planet> workingAllowedSpawnPlanets = List<Planet>.Create_WillNeverBeGCed(30, "DireMacrophageFactionDeepInfo-workingAllowedSpawnPlanets");
+
+        /*public override void SeedStartingEntities_EarlyMajorFactionClaimsOnly( Galaxy galaxy, ArcenHostOnlySimContext Context, MapTypeData mapType )
         {
             Tutorial tutorialData = World_AIW2.Instance.TutorialOrNull;
             if ( tutorialData != null && tutorialData.SkipMacrophageTelium )
                 return;
 
-            //infrequent enough that caching is pointless
-            int intensity = AttachedFaction.BaseInfo.GetDifficultyOrdinal_OrNegativeOneIfNotRelevant();
-            int numToSeed = 1;
+            Planet spawnPlanet = null;
+            workingAllowedSpawnPlanets.Clear();
 
-            ThrowawayListCanMemLeak<Planet> planetsSeededOn = null;
-            //Do not seed this close to AI and Human homeworld. Can be really really annoying and also take out the AI homeworld fast if close enough.
-            if ( AttachedFaction.GetBoolValueForCustomFieldOrDefaultValue( "SeedOnNomadIfPossible", false ) ) //this field won't exist unless DLC2 is installed
-                planetsSeededOn = StandardMapPopulator.Mapgen_SeedSpecialEntities( Context, galaxy, AttachedFaction, SpecialEntityType.None, DireMacrophageFactionBaseInfo.DireTeliumTag, SeedingType.HardcodedCount, numToSeed,
-                                                                          MapGenCountPerPlanet.One, MapGenSeedStyle.FullUseByFactionOnNomadIfPossible, 6, 6, PlanetSeedingZone.MostAnywhere, SeedingExpansionType.ComplicatedOriginal );
-            else
-                planetsSeededOn = StandardMapPopulator.Mapgen_SeedSpecialEntities( Context, galaxy, AttachedFaction, SpecialEntityType.None, DireMacrophageFactionBaseInfo.DireTeliumTag, SeedingType.HardcodedCount, numToSeed,
-                                                                          MapGenCountPerPlanet.One, MapGenSeedStyle.FullUseByFaction, 6, 6, PlanetSeedingZone.MostAnywhere, SeedingExpansionType.ComplicatedOriginal );
-            //StandardMapPopulator.ClearAllUnitsNotBelongingToThisFaction( planetsSeededOn, faction, true );
-        }
+            int preferredHomeworldDistance = 5;
+            do
+            {
+                //debugCode = 600;
+                World_AIW2.Instance.DoForPlanetsSingleThread(false, delegate (Planet planet)
+                {
+                    //debugCode = 700;
+                    if (AttachedFaction.GetBoolValueForCustomFieldOrDefaultValue("SpawnNearPlayer", true) && planet.GetControllingFactionType() == FactionType.Player)
+                    {
+                        workingAllowedSpawnPlanets.Add(planet);
+                        return DelReturn.Continue;
+                    }
+                    if (planet.GetControllingFactionType() == FactionType.Player)
+                        return DelReturn.Continue;
+                    if (planet.GetFactionWithSpecialInfluenceHere().Type != FactionType.NaturalObject && preferredHomeworldDistance >= 6) //don't seed over a minor faction if we are finding good spots
+                    {
+                        return DelReturn.Continue;
+                    }
+                    if (planet.IsPlanetToBeDestroyed || planet.HasPlanetBeenDestroyed)
+                        return DelReturn.Continue;
+                    if (planet.PopulationType == PlanetPopulationType.AIBastionWorld ||
+                            planet.IsZenithArchitraveTerritory)
+                    {
+                        return DelReturn.Continue;
+                    }
+                    //debugCode = 800;
+                    if (planet.OriginalHopsToAIHomeworld >= preferredHomeworldDistance &&
+                            (planet.OriginalHopsToHumanHomeworld == -1 ||
+                            planet.OriginalHopsToHumanHomeworld >= preferredHomeworldDistance + 2))
+                        workingAllowedSpawnPlanets.Add(planet);
+
+                    return DelReturn.Continue;
+                });
+
+                preferredHomeworldDistance--;
+                if (preferredHomeworldDistance == 0)
+                    break;
+            } while (workingAllowedSpawnPlanets.Count == 0);
+            //debugCode = 900;
+            if (workingAllowedSpawnPlanets.Count == 0)
+                throw new Exception("Unable to find a place to spawn the Dire Macrophage");
+
+            // This is not actually random unless we set the seed ourselves.
+            // Since other processing happening before us tends to set the seed to the same value repeatedly.
+            Context.RandomToUse.ReinitializeWithSeed(Engine_Universal.PermanentQualityRandom.Next() + AttachedFaction.FactionIndex);
+            spawnPlanet = workingAllowedSpawnPlanets[Context.RandomToUse.Next(0, workingAllowedSpawnPlanets.Count)];
+
+            //instead of spawning on this planet, create a new planet linked to it
+            if(AttachedFaction.GetStringValueForCustomFieldOrDefaultValue("SpawningOptions", true) == "Invasion")
+            {
+                spawnPlanet = CreateSpawnPlanet(Context, spawnPlanet);
+            }
+            GameEntityTypeData entityData = GameEntityTypeDataTable.Instance.GetRandomRowWithTag(Context, DireMacrophageFactionBaseInfo.DireTeliumTag);
+
+            PlanetFaction pFaction = spawnPlanet.GetPlanetFactionForFaction(AttachedFaction);
+            ArcenPoint spawnLocation = spawnPlanet.GetSafePlacementPointAroundPlanetCenter(Context, entityData, FInt.FromParts(0, 200), FInt.FromParts(0, 600));
+
+            GameEntity_Squad.CreateNew_ReturnNullIfMPClient(pFaction, entityData, entityData.MarkFor(pFaction),
+                                            pFaction.FleetUsedAtPlanet, 0, spawnLocation, Context, "Dire Macrophage Telium");
+
+        }*/
         #endregion
 
         //Chris says: I honestly don't understand the meaning of this helper method, because I don't know what "valid" means in this context.
@@ -777,49 +935,46 @@ namespace Arcen.AIW2.External
                     {
                         debugCode = 100;
                         List<SafeSquadWrapper> colonisers = this.BaseInfo.MacrophageColonisers.GetDisplayList();
-                        for (int i = 0; i < colonisers.Count; i++)
-                        {
                             debugCode = 200;
-                            GameEntity_Squad coloniser = colonisers[i].GetSquad();
-                            if (coloniser == null)
-                                continue;
-                            TemplarPerUnitBaseInfo data = coloniser.TryGetExternalBaseInfoAs<TemplarPerUnitBaseInfo>();
+                            if (entity == null)
+                                return DelReturn.Continue;
+                            TemplarPerUnitBaseInfo data = entity.TryGetExternalBaseInfoAs<TemplarPerUnitBaseInfo>();
                             if (data.UnitToBuild == null)//If we forgot to set which unit to build
                             {
                                 //this shouldn't be possible, but just in case
                                 data.UnitToBuild = GameEntityTypeDataTable.Instance.GetRandomRowWithTag(Context, "TemplarLowTierStructure");
-                                continue;
+                                return DelReturn.Continue;
                             }
 
                             if (data.PlanetIdx == -1)
                             {
                                 //This shouldn't be possible, since we only create the constructor if there's a planet
                                 //to build on, but just in case
-                                Planet newCastlePlanet = GetNewTeliumLocation(coloniser, Context);
+                                Planet newCastlePlanet = GetNewTeliumLocation(entity, Context);
                                 if (newCastlePlanet != null)
                                 {
                                     data.PlanetIdx = newCastlePlanet.Index;
-                                    continue;
+                                    return DelReturn.Continue;
                                 }
-                                //we couldn't find a planet to build on, so just self-destruct
-                                coloniser.Despawn(Context, true, InstancedRendererDeactivationReason.AFactionJustWarpedMeOut); //we've created our new castle
+                            //we couldn't find a planet to build on, so just self-destruct
+                            entity.Despawn(Context, true, InstancedRendererDeactivationReason.AFactionJustWarpedMeOut); //we've created our new castle
                             }
 
-                            if (coloniser.Planet.Index != data.PlanetIdx)
-                                continue;
+                            if (entity.Planet.Index != data.PlanetIdx)
+                                return DelReturn.Continue;
                             debugCode = 300;
-                            PlanetFaction pFaction = coloniser.PlanetFaction;
+                            PlanetFaction pFaction = entity.PlanetFaction;
                             if (data.LocationToBuild == ArcenPoint.ZeroZeroPoint)
                             {
                                 //if we have just arrived at our planet but don't have a location to build, pick one
-                                data.LocationToBuild = coloniser.Planet.GetSafePlacementPoint_AroundEntity(Context, data.UnitToBuild, coloniser, FInt.FromParts(0, 200), FInt.FromParts(0, 650));
-                                continue;
+                                data.LocationToBuild = entity.Planet.GetSafePlacementPoint_AroundEntity(Context, data.UnitToBuild, entity, FInt.FromParts(0, 200), FInt.FromParts(0, 650));
+                                return DelReturn.Continue;
                             }
                             debugCode = 400;
-                            if (Mat.DistanceBetweenPointsImprecise(coloniser.WorldLocation, data.LocationToBuild) > BuildRange)
-                                continue;
+                            if (Mat.DistanceBetweenPointsImprecise(entity.WorldLocation, data.LocationToBuild) > BuildRange)
+                                return DelReturn.Continue;
                             debugCode = 500;
-                            ArcenPoint finalPoint = coloniser.Planet.GetSafePlacementPoint_AroundDesiredPointVicinity(Context, data.UnitToBuild, data.LocationToBuild, FInt.FromParts(0, 10), FInt.FromParts(0, 50));
+                            ArcenPoint finalPoint = entity.Planet.GetSafePlacementPoint_AroundDesiredPointVicinity(Context, data.UnitToBuild, data.LocationToBuild, FInt.FromParts(0, 10), FInt.FromParts(0, 50));
                             debugCode = 600;
                             //Creating the new telium
                             GameEntity_Squad newEntity = GameEntity_Squad.CreateNew_ReturnNullIfMPClient(pFaction, data.UnitToBuild, (byte)1,
@@ -841,7 +996,6 @@ namespace Arcen.AIW2.External
                             entity.Despawn(Context, true, InstancedRendererDeactivationReason.AFactionJustWarpedMeOut); //we've created our new castle
                             debugCode = 1000;
                             ConstructorsLRP.Remove(entity);
-                        }
                     }
                     catch (Exception e)
                     {
@@ -976,7 +1130,108 @@ namespace Arcen.AIW2.External
 
         public override void DoPerSecondLogic_Stage3Main_OnMainThreadAndPartOfSim_HostOnly( ArcenHostOnlySimContext Context )
         {
-			// If we're effectively dead, stop processing.
+
+            if (!AttachedFaction.HasDoneInvasionStyleAction &&
+                     (AttachedFaction.InvasionTime > 0 && AttachedFaction.InvasionTime <= World_AIW2.Instance.GameSecond))
+            {
+                //debugCode = 500;
+                //Lets default to just putting the nanocaust hive on a completely random non-player non-ai-king planet
+                //TODO: improve this
+                GameEntityTypeData entityData = GameEntityTypeDataTable.Instance.GetRandomRowWithTag(Context, DireMacrophageFactionBaseInfo.DireTeliumTag);
+
+                Planet spawnPlanet = null;
+                {
+                    workingAllowedSpawnPlanets.Clear();
+                    int preferredHomeworldDistance = 6;
+                    if (this.BaseInfo.SeedNearPlayer && World_AIW2.Instance.PlayerOwnedPlanets != 0)
+                    {
+                        World_AIW2.Instance.DoForPlanetsSingleThread(false, delegate (Planet planet)
+                        {
+                            if (planet.GetControllingFactionType() == FactionType.Player)
+                            {
+                                workingAllowedSpawnPlanets.Add(planet);
+                                return DelReturn.Continue;
+                            }
+
+                            return DelReturn.Continue;
+                        });
+                    }
+                    else if(!this.BaseInfo.SeedNearPlayer)
+                    {
+                        do
+                        {
+                            //debugCode = 600;
+                            World_AIW2.Instance.DoForPlanetsSingleThread(false, delegate (Planet planet)
+                            {
+                                if (planet.GetControllingFactionType() == FactionType.Player)
+                                    return DelReturn.Continue;
+                                if (planet.GetFactionWithSpecialInfluenceHere().Type != FactionType.NaturalObject && preferredHomeworldDistance >= 4) //don't seed over a minor faction if we are finding good spots
+                                {
+                                    return DelReturn.Continue;
+                                }
+                                if (planet.IsPlanetToBeDestroyed || planet.HasPlanetBeenDestroyed)
+                                    return DelReturn.Continue;
+                                if (planet.PopulationType == PlanetPopulationType.AIBastionWorld ||
+                                        planet.IsZenithArchitraveTerritory)
+                                {
+                                    return DelReturn.Continue;
+                                }
+                                //debugCode = 800;
+                                if (planet.OriginalHopsToAIHomeworld >= preferredHomeworldDistance &&
+                                        (planet.OriginalHopsToHumanHomeworld == -1 ||
+                                        planet.OriginalHopsToHumanHomeworld >= preferredHomeworldDistance))
+                                    workingAllowedSpawnPlanets.Add(planet);
+                                return DelReturn.Continue;
+                            });
+
+                            preferredHomeworldDistance--;
+                            //No need to go past the first loop if we are to seed near the player
+                            if (preferredHomeworldDistance == 0)
+                                break;
+                        } while (workingAllowedSpawnPlanets.Count < 6);
+                    }
+                    //debugCode = 900;
+                    if(workingAllowedSpawnPlanets.Count != 0)
+                    {
+                        Context.RandomToUse.ReinitializeWithSeed(Engine_Universal.PermanentQualityRandom.Next() + AttachedFaction.FactionIndex);
+                        spawnPlanet = workingAllowedSpawnPlanets[Context.RandomToUse.Next(0, workingAllowedSpawnPlanets.Count)];
+
+                        //instead of spawning on this planet, create a new planet linked to it
+                        if (AttachedFaction.GetStringValueForCustomFieldOrDefaultValue("SpawningOptions", true) == "Invasion")
+                        {
+                            spawnPlanet = CreateSpawnPlanet(Context, spawnPlanet);
+                        }
+                        PlanetFaction pFaction = spawnPlanet.GetPlanetFactionForFaction(AttachedFaction);
+                        ArcenPoint spawnLocation = spawnPlanet.GetSafePlacementPointAroundPlanetCenter(Context, entityData, FInt.FromParts(0, 200), FInt.FromParts(0, 600));
+
+                        var originalDireTelium = GameEntity_Squad.CreateNew_ReturnNullIfMPClient(pFaction, entityData, entityData.MarkFor(pFaction),
+                                                        pFaction.FleetUsedAtPlanet, 0, spawnLocation, Context, "Dire Macrophage Telium");
+
+                        AttachedFaction.HasDoneInvasionStyleAction = true;
+
+                        SquadViewChatHandlerBase chatHandlerOrNull = ChatClickHandler.CreateNewAs<SquadViewChatHandlerBase>("ShipGeneralFocus");
+                        if (chatHandlerOrNull != null)
+                            chatHandlerOrNull.SquadToView = LazyLoadSquadWrapper.Create(originalDireTelium);
+
+                        string planetStr = "";
+                        if (spawnPlanet.GetDoHumansHaveVision())
+                        {
+                            planetStr = " from " + spawnPlanet.Name;
+                        }
+
+                        var str = string.Format("<color=#{0}>{1}</color> are invading{2}!", AttachedFaction.FactionCenterColor.ColorHexBrighter, AttachedFaction.GetDisplayName(), planetStr);
+                        World_AIW2.Instance.QueueChatMessageOrCommand(str, ChatType.LogToCentralChat, chatHandlerOrNull);
+                    }
+                    //if (workingAllowedSpawnPlanets.Count == 0)
+                    //   throw new Exception("Unable to find a place to spawn the Dire Macrophage");
+
+                    // This is not actually random unless we set the seed ourselves.
+                    // Since other processing happening before us tends to set the seed to the same value repeatedly.
+                    
+                }
+                
+            }
+            // If we're effectively dead, stop processing.
             //I need to still process it even if no telia, as in this function lies the deletion of rogue macrophage elements
             //This does include colonisers however, who do not get deleted
             if ( BaseInfo.DireTelia.Count <= 0 && BaseInfo.DireHarvesters.Count <= 0 && BaseInfo.MacrophageBastionsInGalaxy.Count <= 0 && BaseInfo.MacrophageFortificationsInGalaxy.Count <= 0 && BaseInfo.MacrophageColonisers.Count <= 0)
@@ -1718,17 +1973,19 @@ namespace Arcen.AIW2.External
             if (World_AIW2.Instance.GameSecond % 60 == 0)
             {
                 //always use macrophage AIP
-                FInt aipToUse = FactionUtilityMethods.Instance.GetCurrentAIP(); //wat, why do we have such things 2 times, deosn't seem to matter though
-                FInt BaseWaveBudgetPerMinute = FInt.FromParts(42, 000);
+                FInt aipToUse = BaseInfo.MacrophageSpecificAIP; //wat, why do we have such things 2 times, deosn't seem to matter though
+                FInt BaseWaveBudgetPerMinute = FInt.FromParts(4, 200);
                 if(World_AIW2.Instance.AIFactions.Count == 1) //Less income when there are more AIs
                 {
-                    BaseWaveBudgetPerMinute = FInt.FromParts(31, 000);
+                    BaseWaveBudgetPerMinute = FInt.FromParts(3, 100);
                 }
                 if (World_AIW2.Instance.AIFactions.Count > 3) //Less income when there are more AIs
                 {
-                    BaseWaveBudgetPerMinute = FInt.FromParts(21, 000);
+                    BaseWaveBudgetPerMinute = FInt.FromParts(2, 100);
                 }
-                if(BaseInfo.MacrophageSpecificAIP > 200)//More budget at more AIP
+                //Higher intensities have bigger waves (note that the budget above is ridiculously small)
+                BaseWaveBudgetPerMinute *= BaseInfo.EffectiveIntensity * 3;
+                if (BaseInfo.MacrophageSpecificAIP > 200)//More budget at more AIP
                 {
                     BaseWaveBudgetPerMinute += BaseWaveBudgetPerMinute/2;   //So for some reason I can do this but not multiply by 0.5 fml
                 }

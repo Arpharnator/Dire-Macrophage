@@ -44,7 +44,7 @@ namespace Arcen.AIW2.External
         {
             DoRefreshFromFactionSettings();
 
-            int load = 30 + (Intensity * 3);
+            int load = 30 + (Intensity * 5);
 
             if ( OptionalExplainCalculation != null )
                 OptionalExplainCalculation.Add( load ).Add( " Load From Dire Macrophage" );
@@ -65,6 +65,30 @@ namespace Arcen.AIW2.External
         {
             ConfigurationForFaction cfg = this.AttachedFaction.Config;
             Intensity = cfg.GetIntValueForCustomFieldOrDefaultValue( "Intensity", true );
+            this.SeedNearPlayer = AttachedFaction.GetBoolValueForCustomFieldOrDefaultValue("SpawnNearPlayer", true);
+            // Solely for the invasion stuff
+            Faction faction = this.AttachedFaction;
+            string invasionTime = AttachedFaction.Config.GetStringValueForCustomFieldOrDefaultValue("InvasionTime", true);
+            if (faction.InvasionTime == -1)
+            {
+                //initialize the invasion time
+                if (invasionTime == "Immediate")
+                    faction.InvasionTime = 1;
+                else if (invasionTime == "Early Game")
+                    faction.InvasionTime = (60 * 60); //1 hours in
+                else if (invasionTime == "Mid Game")
+                    faction.InvasionTime = (2 * (60 * 60)); //1.5 hours in
+                else if (invasionTime == "Late Game")
+                    faction.InvasionTime = 3 * (60 * 60); //3 hours in
+                if (faction.InvasionTime > 1)
+                {
+                    //this will be a desync on the client and host, but the host will correct the client in under 5 seconds.
+                    if (Engine_Universal.PermanentQualityRandom.Next(0, 100) < 50)
+                        faction.InvasionTime += Engine_Universal.PermanentQualityRandom.Next(0, faction.InvasionTime / 10);
+                    else
+                        faction.InvasionTime -= Engine_Universal.PermanentQualityRandom.Next(0, faction.InvasionTime / 10);
+                }
+            }
         }
         #endregion
 

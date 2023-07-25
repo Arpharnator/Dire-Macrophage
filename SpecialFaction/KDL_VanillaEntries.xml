@@ -7,8 +7,7 @@
     description="The galaxy is being invaded by a stronger variant of enormous biological Macrophages. They prey on the AI alongside regular Macrophages for metal, and will try to eat your ships, too.
 
 &lt;color=#f25e1c&gt; HIGH IMPACT:&lt;/color&gt; This faction expands, although in a different manner than their original counterparts, and typically doesn't do irreparable damage early on. Although a bit slow in the beginning, it becomes stronger over time, and can become very impactful. The more fighting there is the stronger you can expect this faction to become, so long the scales aren't completely overwhelming.
-
-Setting this equal to AI main difficulty is good."
+Playstyle wise, they are a defensive juggernaut, whereas their offensive capabilities remain limited due to their unintelligent wandering."
 		ai_can_send_waves_against_this="true" 
 		can_use_spire_debris="false"
 		impact="Moderate" 
@@ -21,10 +20,15 @@ Setting this equal to AI main difficulty is good."
         <custom_field name="Intensity"      display_name="Intensity" description="Just how terrifying is this faction?" sort_group="200" setting_type="IntSlider" default="5" min="1" max="10"/>
         <custom_field name="Allegiance"     display_name="Allegiance" description="Is this faction friendly to the AI(s), humans, or nobody?" sort_group="250" setting_type="CustomDropdownArbitraryOptions" arbitrary_options="Hostile To All,Friendly To Players,Hostile To Players Only,Minor Faction Team Red,Minor Faction Team Blue,Minor Faction Team Green" default_option="Hostile To All" />
         <custom_field name="SpawningOptions" display_name="Spawning Options" description="Modifies the spawning style of this faction.
-Default spawns a single Telium, somewhere in the galaxy."
+Default spawns a single Telium, somewhere in the galaxy.
+Invasion spawns a new planet in which the Telium will be located."
     sort_group="300" 
     setting_type="CustomDropdownArbitraryOptions" 
-    arbitrary_options="Default" 
+    arbitrary_options="Default,Invasion" 
     default_option="Default" />
+	<custom_field name="InvasionTime" display_name="Invasion Time" description="The Dire Macrophage can be set to invade the galaxy at some unknown time during the game, or immediately. An immediate spawn is typical for this faction, while a delayed spawn can greatly weaken them."
+                  sort_group="300" setting_type="CustomDropdownArbitraryOptions" arbitrary_options="Immediate,Early Game,Mid Game,Late Game" default_option="Immediate"/>
+	<custom_field name="SpawnNearPlayer" is_advanced_setting="true" display_name="Spawn Near Player" description="Definitely not recommended unless friendly to you."
+                  sort_group="300" setting_type="BoolToggle" default="false"  />
     </faction>
 </root>
