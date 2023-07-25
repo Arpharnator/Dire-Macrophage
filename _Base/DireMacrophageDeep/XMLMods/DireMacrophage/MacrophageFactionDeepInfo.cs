@@ -985,7 +985,7 @@ namespace Arcen.AIW2.External
                             DireMacrophagePerTeliumBaseInfo newData = newEntity.CreateExternalBaseInfo<DireMacrophagePerTeliumBaseInfo>("DireMacrophagePerTeliumBaseInfo");
                             newData.CurrentHarvesters = 0;
                             newData.ExtraMetalGenerationPerSecond = 0; //Make something in the constants
-                            newData.MetalGainedFromHarvesters = 5000000;
+                            newData.MetalGainedFromHarvesters = 5000000 * entity.CurrentMarkLevel;
                             newData.MetalIncomeFromDefenses = 0;
                             newData.TotalMetalEverCollected = 0;
                             newData.CurrentMetal = 0;
@@ -2001,7 +2001,7 @@ namespace Arcen.AIW2.External
                 //Prevent the increase if at more than 20 minutes of budget, I've seen some really unpleasant things
                 
                 FInt increase = aipToUse * BaseWaveBudgetPerMinute;
-                if (this.BaseInfo.WaveData.currentWaveBudget <= (increase * 20))
+                if (this.BaseInfo.WaveData.currentWaveBudget <= (increase * 10))
                 {
                     this.BaseInfo.WaveData.currentWaveBudget += increase;
                 }
