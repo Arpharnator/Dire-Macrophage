@@ -4,7 +4,7 @@
 
 <entity name="DireMacrophageHarvester"
             thematic_groups="Hidden,VeryMinorAliens"
-			tags="DireMacrophageHarvester,RegularDireMacrophageHarvester,NanocaustsToLich,,BecomesNecromancyMummy,GeneratesBonusHunterShips"
+			tags="DireMacrophageHarvester,RegularDireMacrophageHarvester,NanocaustsToLich,BecomesNecromancyMummy,GeneratesBonusHunterShips"
 			special_entity_type="LargeShipNotStackable"
 			gimbal_icon_size_multiplier="1.25"
 			visuals="Assets/_FinalGameMeshes/Macrophage/Harvester/MacrophageHarvester.prefab"
@@ -429,7 +429,7 @@
   <entity name="DireMacrophageDefense"
 	        thematic_groups="Hidden,VeryMinorAliens"
 			npc_ship_cap_type="SpecialDefenses"
-	    tags="DireMacrophageDefense,InvulnerabilityGranter, SapperImportantPoint,HackForShipType"
+	    tags="DireMacrophageDefense,InvulnerabilityGranter,SapperImportantPoint,HackForShipType"
 	    visuals="assets/_dlc2/zenith/dzepistyle/dzepistylepiratical.prefab" visuals_bundle="exp2_zenith_onslaught"
 	    icon_name="Ships3/DarkZenithEpistyle_Pirate"
 		gimbal_icon_size_multiplier="1.25"
