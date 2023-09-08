@@ -2,7 +2,7 @@
 <root>
     <faction name="DireMacrophageInfestation" 
     display_name="Dire Macrophage Infestation" short_name="Dire Macrophage" processing_group="DireMacrophage"
-    base_info_source="DireMacrophageFactionBaseInfo" deep_info_source="DireMacrophageFactionDeepInfo" team_center_color="c50C878" team_border_color="cC41E3A"
+    base_info_source="DireMacrophageFactionBaseInfo" deep_info_source="DireMacrophageFactionDeepInfo" team_center_color="c343434" team_border_color="c36454F"
     type="SpecialFaction"
     description="The galaxy is being invaded by a stronger variant of enormous biological Macrophages. They prey on the AI alongside regular Macrophages for metal, and will try to eat your ships, too.
 

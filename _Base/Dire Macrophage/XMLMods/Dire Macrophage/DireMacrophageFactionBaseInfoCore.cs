@@ -216,7 +216,7 @@ namespace Arcen.AIW2.External
             }
         }
         #endregion
-
+        /*
         #region WriteTextToSecondLineOfLeftSidebarInLobby
         public override void WriteTextToSecondLineOfLeftSidebarInLobby( ArcenDoubleCharacterBuffer buffer )
         {
@@ -235,11 +235,11 @@ namespace Arcen.AIW2.External
                     buffer.Add( "    " );
                 else
                     hasAdded = true;
-                buffer/*.Add( "Allegiance: " )*/.Add( value );
+                buffer.Add( "Allegiance: " ).Add( value );
             }
         }
         #endregion
-
+        */
         #region DoPerSecondLogic_Stage1Clearing_OnMainThreadAndPartOfSim_ClientAndHost
         public sealed override void DoPerSecondLogic_Stage1Clearing_OnMainThreadAndPartOfSim_ClientAndHost( ArcenClientOrHostSimContextCore Context )
         {
