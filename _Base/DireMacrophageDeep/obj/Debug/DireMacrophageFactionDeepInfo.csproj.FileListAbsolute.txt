@@ -79,4 +79,4 @@ D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacroph
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\DireMacrophageDeep\bin\Debug\DireMacrophageFactionBaseInfo.dll
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\DireMacrophageDeep\bin\Debug\DireMacrophageFactionBaseInfo.pdb
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\DireMacrophageDeep\obj\Debug\DireMacrophageFactionDeepInfo.dll
-D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\DireMacrophageDeep\obj\Debug\DireMacrophageFactionDeepInfo.pdb
+E:\SteamLibrary\steamapps\common\AI War 2\XmlMods\DireMacrophage\ModdableLogicDLLs\DireMacrophageFactionDeepInfo.dll

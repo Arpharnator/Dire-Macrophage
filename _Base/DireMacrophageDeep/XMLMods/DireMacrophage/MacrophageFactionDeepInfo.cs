@@ -1142,7 +1142,7 @@ namespace Arcen.AIW2.External
                 Planet spawnPlanet = null;
                 {
                     workingAllowedSpawnPlanets.Clear();
-                    int preferredHomeworldDistance = 6;
+                    int preferredHomeworldDistance = 8;
                     if (this.BaseInfo.SeedNearPlayer && World_AIW2.Instance.PlayerOwnedPlanets != 0)
                     {
                         World_AIW2.Instance.DoForPlanetsSingleThread(false, delegate (Planet planet)
@@ -1188,7 +1188,7 @@ namespace Arcen.AIW2.External
                             //No need to go past the first loop if we are to seed near the player
                             if (preferredHomeworldDistance == 0)
                                 break;
-                        } while (workingAllowedSpawnPlanets.Count < 6);
+                        } while (workingAllowedSpawnPlanets.Count < 24);
                     }
                     //debugCode = 900;
                     if(workingAllowedSpawnPlanets.Count != 0)

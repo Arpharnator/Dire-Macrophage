@@ -1,3 +1,9 @@
 No tech support provided from Arcen Games on mods.
 
 Introduces the Dire Macrophage as a new faction.
+
+A virulent Macrophage variant has arrived in the galaxy, seeking to propagate and grow. Pretty weak at first, the infestation can grow to monstrous proportions if left unchecked.
+Uses beefed up stock Macrophage alongside some other exotic ships, such as carriers, siege units or even constructors to build structures in order to hold territory.
+You may also be able to hack said structures for ships in order to bolster your fleets.
+Can be allied to any team except for the Dark Alliance.
+Watch out for Borers!

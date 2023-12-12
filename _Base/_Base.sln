@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DireMacrophageFactionBaseInfo", "Dire Macrophage\DireMacrophageFactionBaseInfo.csproj", "{3FF53336-BC07-4AD5-98B5-D9767C954665}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DireMacrophageFactionBaseInfo", "Dire Macrophage\DireMacrophageFactionBaseInfo.csproj", "{141F0BF0-7063-496A-A893-596DBDDBCC04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DireMacrophageFactionDeepInfo", "DireMacrophageDeep\DireMacrophageFactionDeepInfo.csproj", "{0D466657-CD25-4BA7-A9FC-E940B7A3C541}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DireMacrophageFactionDeepInfo", "DireMacrophageDeep\DireMacrophageFactionDeepInfo.csproj", "{B9C0B872-FE2D-4A52-839C-5C26456BB604}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3FF53336-BC07-4AD5-98B5-D9767C954665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FF53336-BC07-4AD5-98B5-D9767C954665}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FF53336-BC07-4AD5-98B5-D9767C954665}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FF53336-BC07-4AD5-98B5-D9767C954665}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D466657-CD25-4BA7-A9FC-E940B7A3C541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D466657-CD25-4BA7-A9FC-E940B7A3C541}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D466657-CD25-4BA7-A9FC-E940B7A3C541}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D466657-CD25-4BA7-A9FC-E940B7A3C541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{141F0BF0-7063-496A-A893-596DBDDBCC04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{141F0BF0-7063-496A-A893-596DBDDBCC04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{141F0BF0-7063-496A-A893-596DBDDBCC04}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{141F0BF0-7063-496A-A893-596DBDDBCC04}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{B9C0B872-FE2D-4A52-839C-5C26456BB604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C0B872-FE2D-4A52-839C-5C26456BB604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C0B872-FE2D-4A52-839C-5C26456BB604}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C0B872-FE2D-4A52-839C-5C26456BB604}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

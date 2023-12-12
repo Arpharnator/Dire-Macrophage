@@ -72,8 +72,8 @@ D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacroph
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\bin\Debug\ArcenUniversal.pdb
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\bin\Debug\PrivateVisExtensions.pdb
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\obj\Debug\DireMacrophageFactionBaseInfo.csproj.CoreCompileInputs.cache
-D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\obj\Debug\DireMacrophageFactionBaseInfo.csproj.CopyComplete
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\bin\Debug\DireMacrophageFactionBaseInfo.dll
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\bin\Debug\DireMacrophageFactionBaseInfo.pdb
 D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\obj\Debug\DireMacrophageFactionBaseInfo.dll
-D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\obj\Debug\DireMacrophageFactionBaseInfo.pdb
+D:\Users\Clement\Desktop\Standing outlier\Games\Main\AI War 2\Github\DireMacrophage\_Base\Dire Macrophage\obj\Debug\DireMacrophageFactionBaseInfo.csprojAssemblyReference.cache
+E:\SteamLibrary\steamapps\common\AI War 2\XmlMods\DireMacrophage\ModdableLogicDLLs\DireMacrophageFactionBaseInfo.dll
